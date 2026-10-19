@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ca">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Problemes amb esquema · Enllaços per al professorat</title>
+    <meta name="description" content="Problemes d’enunciat resolts amb diagrames de barres: generador d’enllaços per al professorat.">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/tokens.css?v=713140e1">
+    <link rel="stylesheet" href="css/esquemes.css?v=2d245ba8">
+</head>
+<body>
+    <header class="capcalera">
+        <h1>Problemes amb esquema</h1>
+    </header>
+
+    <main class="generador">
+        <section>
+            <p>
+                L’alumne llegeix el problema, en tria el <strong>tipus</strong>, posa els nombres en un
+                <strong>diagrama de barres</strong> i, només després, tria l’operació. Sempre els mateixos cinc passos.
+                Pensat per a l’alumnat que resol els problemes buscant paraules clau («més» → sumar), i per a l’alumnat amb TEA, DIL o TDAH.
+            </p>
+        </section>
+
+        <section aria-labelledby="t-esquemes">
+            <h2 id="t-esquemes">1. Quins tipus de problema?</h2>
+            <fieldset>
+                <legend class="sr">Esquemes</legend>
+                <div id="opcions-esquemes" class="opcions-esquemes"></div>
+            </fieldset>
+        </section>
+
+        <section aria-labelledby="t-opcions">
+            <h2 id="t-opcions">2. Opcions</h2>
+            <div class="fila-camp">
+                <label for="nivell">Nivell</label>
+                <select id="nivell">
+                    <option value="1">N1 · El que no saps és el resultat (fins a 20)</option>
+                    <option value="2">N2 · El que no saps és el canvi o una part (fins a 50)</option>
+                    <option value="3">N3 · El que no saps és el principi (fins a 100)</option>
+                    <option value="4">N4 · Paraules que enganyen (fins a 100)</option>
+                </select>
+            </div>
+            <div class="fila-camp">
+                <label for="perfil">Perfil</label>
+                <select id="perfil">
+                    <option value="">Cap (ESO)</option>
+                    <option value="tea">TEA: sense animacions, frase «Ara… Després…» a cada pas</option>
+                    <option value="tdah">TDAH: tandes de 5, un pas a la vegada, temporitzador opcional</option>
+                    <option value="dil">DIL: nombres fins a 20, 2 tipus a triar, imatges</option>
+                </select>
+            </div>
+            <div class="fila-camp">
+                <label for="n">Problemes</label>
+                <select id="n">
+                    <option>5</option>
+                    <option selected>10</option>
+                    <option>15</option>
+                    <option>20</option>
+                </select>
+                <label for="fixed">Sessió fixa</label>
+                <select id="fixed">
+                    <option value="">— Aleatòria —</option>
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                </select>
+            </div>
+            <div class="fila-camp">
+                <label for="pictos">Imatges al costat de les paraules</label>
+                <select id="pictos">
+                    <option value="">Segons el perfil</option>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+                <label for="temporitzador">Temporitzador</label>
+                <select id="temporitzador">
+                    <option value="">No</option>
+                    <option value="2">2 minuts per problema</option>
+                    <option value="3">3 minuts per problema</option>
+                    <option value="5">5 minuts per problema</option>
+                </select>
+            </div>
+        </section>
+
+        <section aria-labelledby="t-enllac">
+            <h2 id="t-enllac">3. L’enllaç</h2>
+            <p id="enllac" class="enllac" tabindex="0"></p>
+            <div class="accions">
+                <button type="button" class="btn btn-principal" id="btn-copia">Copia</button>
+                <button type="button" class="btn" id="btn-obre">Obre</button>
+            </div>
+            <p id="estat-copia" class="nota" aria-live="polite"></p>
+            <p class="nota">Cap codi de verificació: és per practicar. Amb «Sessió fixa», tota la classe té els mateixos problemes.</p>
+        </section>
+
+        <section aria-labelledby="t-tipus">
+            <h2 id="t-tipus">Els sis tipus</h2>
+            <dl id="explica" class="explica"></dl>
+        </section>
+    </main>
+
+    <footer class="peu">
+        <p>
+            Material desenvolupat per David Arso Civil per al Departament de Matemàtiques de l’INS Miquel Tarradell.
+            Contingut sota CC BY-NC-SA 4.0, codi sota llicència MIT. <a href="LLICENCIA.md">Llicència</a>.
+        </p>
+    </footer>
+
+    <script src="js/motor/esquemes.js?v=5ab23a64"></script>
+    <script src="js/ui/enllacos.js?v=dfb43607"></script>
+</body>
+</html>

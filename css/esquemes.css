@@ -1,0 +1,673 @@
+/*
+============================================================================
+PROJECTE: esquemes (Step Quiz, vanilla JS)
+FITXER: css/esquemes.css
+ROL: Estils de la pàgina de l'alumne (problemes.html) i del generador
+     d'enllaços (index.html): passos, enunciat, fitxes, diagrames, perfils.
+     Sense animacions llargues (≤ 300 ms) i cap amb el perfil tea o amb
+     prefers-reduced-motion. Impressió: negre sobre blanc.
+DEPENDÈNCIES: css/tokens.css (es carrega abans).
+============================================================================
+*/
+* {
+    box-sizing: border-box;
+}
+html {
+    -webkit-text-size-adjust: 100%;
+}
+body {
+    margin: 0;
+    padding: 12px 16px 32px;
+    font-family: var(--lletra);
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--text);
+    background: var(--fons);
+}
+button,
+input,
+select {
+    font: inherit;
+}
+.sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+/* «hidden» també per als SVG (l'atribut sol no els amaga) */
+[hidden] {
+    display: none !important;
+}
+.capcalera,
+.passos,
+.ara-passa,
+.principal,
+.peu,
+.generador {
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.capcalera {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+.capcalera h1 {
+    margin: 0;
+    font-size: 1.45em;
+    color: var(--primari-fosc);
+    flex: 1 1 auto;
+}
+.comptador {
+    margin: 0;
+    color: var(--text-suau);
+    font-weight: 600;
+}
+.rellotge {
+    width: 40px;
+    height: 40px;
+}
+.fons-disc {
+    fill: none;
+    stroke: var(--vora-panell);
+    stroke-width: 8;
+}
+.disc {
+    fill: none;
+    stroke: var(--primari);
+    stroke-width: 8;
+    transform: rotate(-90deg);
+    transform-origin: 20px 20px;
+}
+
+/* ── Els cinc passos (sempre al mateix lloc) ───────────────────────────── */
+.passos {
+    list-style: none;
+    padding: 0;
+    margin: 12px auto 8px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+}
+.passos li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-suau);
+    font-size: 0.85em;
+    line-height: 1.2;
+}
+.passos .punt {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--vora-panell);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    background: var(--panell);
+}
+.passos li.fet .punt {
+    background: var(--be);
+    border-color: var(--be);
+    color: var(--panell);
+}
+.passos li.actual {
+    color: var(--text);
+    font-weight: 700;
+}
+.passos li.actual .punt {
+    border-color: var(--primari);
+    background: var(--primari);
+    color: var(--panell);
+}
+@media (max-width: 560px) {
+    .passos .nom-pas {
+        display: none; /* al mòbil, només els números; el títol del pas diu quin és */
+    }
+    .passos li {
+        justify-content: center;
+    }
+}
+.ara-passa {
+    margin: 0 auto 8px;
+    padding: 6px 10px;
+    border-left: 4px solid var(--info);
+    background: var(--info-fons);
+    color: var(--info);
+    border-radius: 6px;
+}
+
+/* ── Enunciat i pas ────────────────────────────────────────────────────── */
+.enunciat,
+.pas,
+.generador section {
+    background: var(--panell);
+    border: 1px solid var(--vora-panell);
+    border-radius: var(--radi);
+    box-shadow: var(--ombra);
+    padding: 12px 14px;
+    margin-bottom: 12px;
+}
+.text-problema {
+    font-size: 1.2em;
+    line-height: 1.9;
+    margin: 0;
+}
+.picto {
+    font-size: 1.1em;
+}
+.resum {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+    min-height: 1.5em;
+}
+.insignia {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: var(--primari-clar);
+    color: var(--primari-fosc);
+    font-weight: 600;
+    font-size: 0.9em;
+}
+.pas-titol {
+    margin: 0;
+    font-size: 1.2em;
+}
+.pas-titol:focus {
+    outline: none;
+}
+.pas-instruccio {
+    margin: 4px 0 10px;
+    color: var(--text-suau);
+}
+.nota {
+    color: var(--text-suau);
+    margin: 6px 0;
+    font-size: 0.92em;
+}
+
+/* ── Fitxes ────────────────────────────────────────────────────────────── */
+.xip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 2px 10px;
+    margin: 2px;
+    border: 2px solid var(--xip-vora);
+    border-radius: 10px;
+    background: var(--xip);
+    color: var(--xip-text);
+    font-weight: 800;
+    font-size: 1em;
+    line-height: 1;
+    cursor: default;
+    touch-action: none;
+}
+.enunciat.actiu .xip,
+.piscina .xip {
+    cursor: grab;
+}
+.xip.usat {
+    opacity: 0.45;
+}
+.xip.seleccionat {
+    outline: 4px solid var(--info);
+    outline-offset: 2px;
+}
+.xip-q {
+    background: var(--panell);
+    color: var(--text);
+    border-style: dashed;
+}
+.piscina {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0 4px;
+}
+.arrossega {
+    position: fixed;
+    z-index: 10;
+    pointer-events: none;
+    transform: translate(-50%, -60%);
+    padding: 8px 14px;
+    border: 2px solid var(--xip-vora);
+    border-radius: 10px;
+    background: var(--xip);
+    color: var(--xip-text);
+    font-weight: 800;
+}
+
+/* ── Diagrames de barres ───────────────────────────────────────────────── */
+.diagrama {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 6px 0;
+}
+.fila {
+    display: flex;
+    gap: 4px;
+}
+.barra {
+    min-height: 56px;
+    border: 2px solid var(--barra-vora);
+    border-radius: 6px;
+    background: var(--barra);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+}
+.f1 {
+    flex: 1 1 0;
+}
+.f2 {
+    flex: 2 1 0;
+}
+.f3 {
+    flex: 3 1 0;
+}
+.f4 {
+    flex: 4 1 0;
+}
+.f5 {
+    flex: 5 1 0;
+}
+.barra.afegeix,
+.barra.altra {
+    background: var(--barra-2);
+    border-color: var(--barra-2-vora);
+}
+.barra.treu {
+    background: repeating-linear-gradient(135deg, var(--barra-2) 0 8px, var(--panell) 8px 16px);
+    border-color: var(--barra-2-vora);
+    border-style: dashed;
+}
+.barra.diferencia {
+    background: var(--panell);
+    border-style: dashed;
+    border-color: var(--barra-2-vora);
+}
+.buit {
+    min-height: 56px;
+}
+.punts {
+    align-self: center;
+    font-weight: 800;
+    color: var(--text-suau);
+    padding: 0 2px;
+}
+.grup-gran {
+    border-bottom: 3px solid var(--barra-vora);
+    padding-bottom: 4px;
+}
+.peu-diagrama {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.casella {
+    cursor: pointer;
+    color: var(--text);
+    padding: 2px 4px;
+    font: inherit;
+}
+.casella.petita {
+    min-height: 56px;
+    min-width: 7.5em;
+    border: 2px solid var(--barra-vora);
+    border-radius: 6px;
+    background: var(--barra);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.casella-etiqueta {
+    font-size: 0.75em;
+    color: var(--text-suau);
+    line-height: 1.1;
+    text-align: center;
+}
+.casella-valor {
+    min-width: 2.2em;
+    min-height: 1.4em;
+    font-weight: 800;
+    font-size: 1.15em;
+    border-bottom: 2px dashed var(--text-suau);
+    text-align: center;
+}
+.casella.plena .casella-valor,
+.casella-valor.copia {
+    border-bottom-color: transparent;
+}
+.casella.mal {
+    border-color: var(--error);
+    border-width: 3px;
+    background: var(--error-fons);
+}
+.casella:focus-visible {
+    outline: 3px solid var(--info);
+    outline-offset: 2px;
+}
+.taula-proporcio {
+    border-collapse: separate;
+    border-spacing: 6px;
+}
+.taula-proporcio th {
+    text-align: right;
+    font-weight: 600;
+    padding-right: 6px;
+}
+.taula-proporcio .casella {
+    min-height: 56px;
+    min-width: 6em;
+    border: 2px solid var(--barra-vora);
+    border-radius: 6px;
+    background: var(--barra);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.fix {
+    display: inline-flex;
+    min-width: 6em;
+    min-height: 56px;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--vora-panell);
+    border-radius: 6px;
+    font-weight: 800;
+    font-size: 1.15em;
+}
+
+/* ── Targetes dels esquemes ────────────────────────────────────────────── */
+.cartes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+}
+.carta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 10px;
+    border: 2px solid var(--vora-panell);
+    border-radius: 10px;
+    background: var(--panell);
+    color: var(--text);
+    cursor: pointer;
+}
+.carta-icona {
+    font-size: 1.6em;
+}
+.carta-nom {
+    font-weight: 700;
+    text-align: center;
+}
+.carta.mal {
+    border-color: var(--error);
+    opacity: 0.6;
+}
+.carta.mal::after {
+    content: '✗';
+    color: var(--error);
+    font-weight: 800;
+}
+.mini {
+    width: 78px;
+    height: 42px;
+}
+.m-barra {
+    fill: var(--barra);
+    stroke: var(--barra-vora);
+}
+.m-afegit {
+    fill: var(--barra-2);
+    stroke: var(--barra-2-vora);
+}
+.m-buit {
+    fill: none;
+    stroke: var(--barra-2-vora);
+    stroke-dasharray: 3 2;
+}
+.m-linia {
+    stroke: var(--text-suau);
+}
+.m-text {
+    fill: var(--text);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* ── Operació i resposta ───────────────────────────────────────────────── */
+.equacio {
+    font-size: 1.6em;
+    font-weight: 800;
+    margin: 4px 0 10px;
+    letter-spacing: 0.04em;
+}
+.pregunta {
+    font-weight: 600;
+}
+.ops {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.op {
+    width: 56px;
+    height: 56px;
+    border: 2px solid var(--primari);
+    border-radius: 10px;
+    background: var(--panell);
+    color: var(--primari-fosc);
+    font-size: 1.6em;
+    font-weight: 800;
+    cursor: pointer;
+}
+.op.triat {
+    background: var(--primari);
+    color: var(--panell);
+}
+.op.mal {
+    border-color: var(--error);
+    color: var(--error);
+    opacity: 0.6;
+}
+.op:disabled {
+    cursor: default;
+}
+.fila-calcul,
+.frase {
+    font-size: 1.25em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.op-gran {
+    font-size: 1.3em;
+    font-weight: 800;
+}
+input.num {
+    width: 4.2em;
+    min-height: 44px;
+    padding: 4px 8px;
+    border: 2px solid var(--vora-panell);
+    border-radius: 8px;
+    background: var(--panell);
+    color: var(--text);
+    font-size: 1em;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* ── Missatges i botons ────────────────────────────────────────────────── */
+.feedback .fb {
+    margin: 8px 0;
+    padding: 8px 10px;
+    border-radius: 8px;
+}
+.fb-error {
+    background: var(--error-fons);
+    color: var(--error);
+}
+.fb-be {
+    background: var(--be-fons);
+    color: var(--be);
+}
+.fb-info {
+    background: var(--info-fons);
+    color: var(--info);
+}
+.fb-icona {
+    font-weight: 800;
+}
+.accions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+.btn {
+    min-height: 44px;
+    padding: 8px 18px;
+    border: 2px solid var(--primari);
+    border-radius: 8px;
+    background: var(--panell);
+    color: var(--primari-fosc);
+    font-weight: 700;
+    cursor: pointer;
+}
+.btn-principal {
+    background: var(--primari);
+    color: var(--panell);
+}
+.btn:focus-visible,
+.carta:focus-visible,
+.op:focus-visible,
+.xip:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid var(--info);
+    outline-offset: 2px;
+}
+.peu {
+    color: var(--text-suau);
+    font-size: 0.82em;
+    margin-top: 16px;
+}
+.peu a {
+    color: inherit;
+}
+
+/* ── Generador d'enllaços (index.html) ─────────────────────────────────── */
+.generador h2 {
+    margin: 0 0 8px;
+    font-size: 1.1em;
+}
+.generador fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+.opcions-esquemes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 6px;
+}
+.generador label.opcio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+}
+.generador input[type='checkbox'],
+.generador input[type='radio'] {
+    width: 22px;
+    height: 22px;
+}
+.fila-camp {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    align-items: center;
+    margin: 6px 0;
+}
+.fila-camp select {
+    min-height: 44px;
+    padding: 4px 8px;
+    border: 1px solid var(--vora-panell);
+    border-radius: 8px;
+    background: var(--panell);
+    color: var(--text);
+}
+.enllac {
+    font-family: ui-monospace, monospace;
+    word-break: break-all;
+    padding: 8px;
+    border-radius: 8px;
+    background: var(--fons);
+    border: 1px solid var(--vora-panell);
+}
+.explica dt {
+    font-weight: 700;
+}
+.explica dd {
+    margin: 0 0 6px;
+    color: var(--text-suau);
+}
+
+/* ── Perfils ───────────────────────────────────────────────────────────── */
+body.perfil-dil .text-problema {
+    font-size: 1.35em;
+}
+body.perfil-tea *,
+body.perfil-tea *::before,
+body.perfil-tea *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* ── Impressió ─────────────────────────────────────────────────────────── */
+@page {
+    size: A4;
+    margin: 15mm;
+}
+@media print {
+    body {
+        background: #fff;
+        color: #000;
+    }
+    .accions,
+    .peu,
+    .rellotge {
+        display: none !important;
+    }
+}
